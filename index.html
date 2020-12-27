@@ -13,10 +13,14 @@
 <input type="radio" name="engine" value="stockfish">Stockfish</input></br>
 
 <button id="reset" onclick="resetBoard()">Reset</button>
+<p>Load FEN:</p>
+<input type="text" id="fen"></input>
+<button id="load" onclick="loadFEN()">OK</button>
 
 <script src="js/jquery-3.4.1.min.js"></script>
 <script src="js/chessboard-1.0.0.min.js"></script>
 <script src="js/chess.js"></script>
+<script src="js/stockfish.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>
