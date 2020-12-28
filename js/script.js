@@ -1,5 +1,3 @@
-var game = new Chess()
-
 function onDragStart(source, piece, position, orientation) {
   if (game.game_over()) return false
   if (piece.search(/^b/) !== -1) return false
@@ -19,6 +17,7 @@ function loadFEN() {
 
 function resetState() {
   game = new Chess()
+  console.log(game.ascii())
   board.position(game.fen())
   engines.forEach(n => n.reset())
 }
@@ -34,6 +33,8 @@ function makeMove() {
     window.setTimeout(stockfish.move, 250)
   } else if (selection === "random") {
     window.setTimeout(random.move, 250)
+  } else if (selection === "custom") {
+    window.setTimeout(custom.move, 250)
   }
 }
 
@@ -61,8 +62,10 @@ var config = {
   onSnapEnd: onSnapEnd
 }
 
-board = Chessboard('myBoard', config)
+var board = Chessboard('myBoard', config)
+var game = new Chess()
 
-var random = new RandomAI(game, board)
 var stockfish = new StockfishAI()
-var engines = [random, stockfish]
+var custom = new CustomAI()
+var random = new RandomAI()
+var engines = [random, stockfish, custom]

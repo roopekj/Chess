@@ -11,20 +11,24 @@
 <body>
 
   <div id="myBoard" style="width: 400px"></div>
-  <input type="radio" name="engine" value="random" checked=true>Random</input>
-  <input type="radio" name="engine" value="stockfish">Stockfish</input></br>
+  <input type="radio" name="engine" value="custom" checked=true>Custom</input>
+  <input type="radio" name="engine" value="random">Random</input>
+  <input type="radio" name="engine" value="stockfish">Stockfish</input>
+  </br>
 
   <button id="reset" onclick="resetState()">Reset</button>
   <p>Load FEN:</p>
   <input type="text" id="fen"></input>
   <button id="load" onclick="loadFEN()">OK</button>
 
+  <script src="js/AI/helpers.js"></script>
   <script src="js/jquery-3.4.1.min.js"></script>
   <script src="js/chessboard-1.0.0.min.js"></script>
   <script src="js/chess.js"></script>
   <script src="js/stockfish.js"></script>
   <script src="js/AI/randomAI.js"></script>
   <script src="js/AI/stockfishAI.js"></script>
+  <script src="js/AI/customAI.js"></script>
   <script src="js/script.js"></script>
 </body>
 
