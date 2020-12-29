@@ -7,19 +7,19 @@ pvalue = {
     'k': 20000
 }
 
-pawnEvalWhite = [
-    0, 0, 0, 0, 0, 0, 0, 0,
+pawnEvalBlack = [
+    100, 100, 100, 100, 100, 100, 100, 100,
     50, 50, 50, 50, 50, 50, 50, 50,
     10, 10, 20, 30, 30, 20, 10, 10,
     5, 5, 10, 25, 25, 10, 5, 5,
-    0, 0, 0, 20, 20, 0, 0, 0,
+    0, 0, 15, 20, 20, 15, 0, 0,
     5, -5, -10, 0, 0, -10, -5, 5,
     5, 10, 10, -20, -20, 10, 10, 5,
     0, 0, 0, 0, 0, 0, 0, 0,
 ]
-pawnEvalBlack = pawnEvalWhite.reverse()
+pawnEvalWhite = pawnEvalBlack.reverse()
 
-knightEvalWhite = [
+knightEvalBlack = [
     -50, -40, -30, -30, -30, -30, -40, -50,
     -40, -20, 0, 0, 0, 0, -20, -40,
     -30, 0, 10, 15, 15, 10, 0, -30,
@@ -29,9 +29,9 @@ knightEvalWhite = [
     -40, -20, 0, 5, 5, 0, -20, -40,
     -50, -40, -30, -30, -30, -30, -40, -50,
 ]
-knightEvalBlack = knightEvalWhite
+knightEvalWhite = knightEvalBlack
 
-bishopEvalWhite = [
+bishopEvalBlack = [
     -20, -10, -10, -10, -10, -10, -10, -20,
     -10, 0, 0, 0, 0, 0, 0, -10,
     -10, 0, 5, 10, 10, 5, 0, -10,
@@ -41,10 +41,10 @@ bishopEvalWhite = [
     -10, 5, 0, 0, 0, 0, 5, -10,
     -20, -10, -10, -10, -10, -10, -10, -20,
 ]
-bishopEvalBlack = bishopEvalWhite.reverse()
+bishopEvalWhite = bishopEvalBlack.reverse()
 
-rookEvalWhite = [
-    0, 0, 0, 0, 0, 0, 0, 0,
+rookEvalBlack = [
+    8, 8, 8, 8, 8, 8, 8, 8,
     5, 10, 10, 10, 10, 10, 10, 5,
     -5, 0, 0, 0, 0, 0, 0, -5,
     -5, 0, 0, 0, 0, 0, 0, -5,
@@ -53,9 +53,9 @@ rookEvalWhite = [
     -5, 0, 0, 0, 0, 0, 0, -5,
     0, 0, 0, 5, 5, 0, 0, 0,
 ]
-rookEvalBlack = rookEvalWhite.reverse()
+rookEvalWhite = rookEvalBlack.reverse()
 
-queenEvalWhite = [
+queenEvalBlack = [
     -20, -10, -10, -5, -5, -10, -10, -20,
     -10, 0, 0, 0, 0, 0, 0, -10,
     -10, 0, 5, 5, 5, 5, 0, -10,
@@ -65,9 +65,9 @@ queenEvalWhite = [
     -10, 0, 5, 0, 0, 0, 0, -10,
     -20, -10, -10, -5, -5, -10, -10, -20,
 ]
-queenEvalBlack = queenEvalWhite
+queenEvalWhite = queenEvalBlack.reverse()
 
-kingEvalWhite = [
+kingEvalBlack = [
     -30, -40, -40, -50, -50, -40, -40, -30,
     -30, -40, -40, -50, -50, -40, -40, -30,
     -30, -40, -40, -50, -50, -40, -40, -30,
@@ -77,4 +77,16 @@ kingEvalWhite = [
     20, 20, 0, 0, 0, 0, 20, 20,
     20, 30, 10, 0, 0, 10, 30, 20,
 ]
-kingEvalBlack = kingEvalWhite.reverse()
+kingEvalWhite = kingEvalBlack.reverse()
+
+kingEvalBlackEnd = [
+    -50, -40, -30, -20, -20, -30, -40, -50,
+    -30, -20, -10,  0,  0, -10, -20, -30,
+    -30, -10, 20, 30, 30, 20, -10, -30,
+    -30, -10, 30, 40, 40, 30, -10, -30,
+    -30, -10, 30, 40, 40, 30, -10, -30,
+    -30, -10, 20, 30, 30, 20, -10, -30,
+    -30, -30,  0,  0,  0,  0, -30, -30,
+    -50, -30, -30, -30, -30, -30, -30, -50
+]
+kingEvalWhiteEnd = kingEvalBlackEnd.reverse()
