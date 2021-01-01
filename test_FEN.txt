@@ -1,0 +1,6 @@
+mate in 1: k3q3/8/8/8/8/PP6/PPPP4/1K6 b - - 0 3
+mate in 2: k3q3/8/8/8/8/PP6/PPPP4/KR2r3 b - - 0 1
+mate in 3: k3q3/4r3/8/8/8/PP6/PPPP4/K2R4 b - - 0 1
+promotion: 3kq3/2pppppp/8/8/8/8/6p1/K7 b - - 0 1
+block mate in 1: 7k/4pppp/8/r7/6PK/8/8/3R4 b - - 0 1
+reply to scholar's mate: r1bqkbnr/pppp1ppp/2n5/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR b KQkq - 0 1

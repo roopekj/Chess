@@ -56,25 +56,25 @@ class CustomAI {
     }
 
     evaluate() {
-        this.wvalue = 0
-        this.bvalue = 0
-        let row_index = 0
-        game.board().forEach(row => {
-            let column_index = 0
-            row.forEach(piece => {
+        let board = game.board()
+        let wvalue = 0
+        let bvalue = 0
+
+        let square_index = 0
+        for (let row_index = 0; row_index < 8; row_index++) {
+            for (let column_index = 0; column_index < 8; column_index++) {
+                let piece = board[row_index][column_index]
                 if (piece) {
-                    let index = 8 * row_index + column_index
                     if (piece.color === 'w') {
-                        this.wvalue += this.pieceEval(piece.type, piece.color, index)
+                        wvalue += this.pieceEval(piece.type, piece.color, square_index)
                     } else if (piece.color === 'b') {
-                        this.bvalue += this.pieceEval(piece.type, piece.color, index)
+                        bvalue += this.pieceEval(piece.type, piece.color, square_index)
                     }
                 }
-                column_index += 1
-            })
-            row_index += 1
-        })
-        return this.bvalue - this.wvalue
+                square_index += 1
+            }
+        }
+        return bvalue - wvalue
     }
 
     moveEval(a, b) {
@@ -82,10 +82,10 @@ class CustomAI {
             if (n.promotion != null) return -Infinity
 
             let output = 0
-            // TODO: Optimize this code so that it can be used in evaluation without timeouts
+
+            // TODO: Optimize this code so that it can be used in evaluation
             /*game.move(n)
             if (game.in_check()) {
-                game.undo()
                 output -= 150
             }
             game.undo()*/
@@ -103,15 +103,16 @@ class CustomAI {
         if (depth <= 0) {
             return this.evaluate()
         }
-        if (game.game_over()) {
+        let possibleMoves = game.moves({ verbose: true })
+        if (possibleMoves.length === 0) {
             if (!maximize) return Infinity
             else return -Infinity
         }
 
-        let sortedMoves = game.moves({ verbose: true }).sort(this.moveEval)
+        let sortedMoves = possibleMoves.sort(this.moveEval)
 
         if (maximize) {
-            var value = -Infinity
+            let value = -Infinity
             sortedMoves.forEach(n => {
                 game.move(n)
                 value = Math.max(value, this.search(depth - 1, false, alpha, beta))
@@ -123,7 +124,7 @@ class CustomAI {
             })
             return value
         } else {
-            var value = Infinity
+            let value = Infinity
             sortedMoves.reverse().forEach(n => {
                 game.move(n)
                 value = Math.min(value, this.search(depth - 1, true, alpha, beta))

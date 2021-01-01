@@ -1,6 +1,5 @@
 class RandomAI {
-  constructor() {
-  }
+  constructor() { }
 
   reset() { }
 
