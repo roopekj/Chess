@@ -25,7 +25,7 @@ class CustomAI {
         } else if (type === 'k') {
             if (this.endGame) (color === 'w') ? value += kingEvalWhiteEnd[index] : value += kingEvalBlackEnd[index]
             else (color === 'w') ? value += kingEvalWhite[index] : value += kingEvalBlack[index]
-            
+
         }
         return value
     }
@@ -42,16 +42,16 @@ class CustomAI {
                 if (piece) {
                     if (piece.color === 'w') {
                         if (piece.type === 'q') queensWhite += 1
-                        else if (piece.type === 'r' || piece.type === 'b' || piece.type === 'n') minorWhite += 1
+                        else if (piece.type === 'r' || piece.type === 'b' || piece.type === 'n') minorWhite += 1
                     } else if (piece.color === 'b') {
                         if (piece.type === 'q') queensBlack += 1
-                        else if (piece.type === 'r' || piece.type === 'b' || piece.type === 'n') minorBlack += 1
+                        else if (piece.type === 'r' || piece.type === 'b' || piece.type === 'n') minorBlack += 1
                     }
                 }
             })
         })
-        let whiteEndGame = queensWhite === 0 || (queensWhite === 1 && minorWhite <= 1)
-        let blackEndGame = queensBlack === 0 || (queensBlack === 1 && minorBlack <= 1)
+        let whiteEndGame = queensWhite === 0 || (queensWhite === 1 && minorWhite <= 1)
+        let blackEndGame = queensBlack === 0 || (queensBlack === 1 && minorBlack <= 1)
         if (whiteEndGame && blackEndGame) this.endGame = true
     }
 
@@ -79,24 +79,26 @@ class CustomAI {
 
     moveEval(a, b) {
         function inner(n) {
-            if (n.promotion != null) return -Infinity
+            if (n.promotion != null) return Infinity
 
             let output = 0
 
-            // TODO: Optimize this code so that it can be used in evaluation
-            /*game.move(n)
+            /*
+            game.move(n)
             if (game.in_check()) {
                 output -= 150
             }
-            game.undo()*/
-            if (n.capture != null) {
-                output -= pvalue(game.get(n.to).type)
+            game.undo()
+            */
+            
+            if (n.captured != null) {
+                output += pvalue[n.piece]
             }
-    
+
             return output
         }
 
-        return inner(a) - inner(b);
+        return inner(b) - inner(a);
     }
 
     search(depth, maximize, alpha, beta) {
@@ -113,28 +115,27 @@ class CustomAI {
 
         if (maximize) {
             let value = -Infinity
-            sortedMoves.forEach(n => {
-                game.move(n)
-                value = Math.max(value, this.search(depth - 1, false, alpha, beta))
+            for (var i = 0; i < sortedMoves.length; i++) {
+                game.move(sortedMoves[i])
+                value = Math.max(value, this.search(depth - 1, !maximize, alpha, beta))
                 alpha = Math.max(alpha, value)
                 game.undo()
                 if (beta <= alpha) {
                     return value
                 }
-            })
+            }
             return value
         } else {
             let value = Infinity
-            sortedMoves.reverse().forEach(n => {
-                game.move(n)
-                value = Math.min(value, this.search(depth - 1, true, alpha, beta))
-                beta = Math.min(alpha, value)
+            for (var i = sortedMoves.length - 1; i >= 0; i--) {
+                game.move(sortedMoves[i])
+                value = Math.min(value, this.search(depth - 1, !maximize, alpha, beta))
+                beta = Math.min(beta, value)
                 game.undo()
                 if (beta <= alpha) {
                     return value
                 }
-                
-            })
+            }
             return value
         }
     }
@@ -147,20 +148,22 @@ class CustomAI {
         this.isEndGame()
         var currMax = -Infinity
         var currMove = null
-        let sortedMoves = game.moves({ verbose: true }).sort(this.moveEval)
-        sortedMoves.forEach(n => {
-            if (currMax === Infinity) {
-                // This means we found mate in x, so we won't consider other moves
+        let possibleMoves = game.moves({ verbose: true })
+        let sortedMoves = possibleMoves.sort(this.moveEval)
+        for (var i = 0; i < sortedMoves.length; i++) {
+            game.move(sortedMoves[i])
+            let maxValue = this.search(2, false, -Infinity, Infinity)
+            if (maxValue === Infinity) {
+                // This line leads to a mate in x, so we don't need to consider the others
+                updateState()
                 return
             }
-            game.move(n)
-            let maxValue = this.search(2, false, -Infinity, Infinity)
             if (maxValue > currMax) {
                 currMax = maxValue
-                currMove = n
+                currMove = sortedMoves[i]
             }
             game.undo()
-        })
+        }
         game.move(currMove)
         updateState()
     }

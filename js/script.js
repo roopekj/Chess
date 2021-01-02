@@ -9,7 +9,7 @@ function loadFEN() {
   resetState()
   game.load(fen)
   updateState()
-  
+
   if (game.turn() === 'b') {
     makeMove()
   }
