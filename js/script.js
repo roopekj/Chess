@@ -1,6 +1,11 @@
+let flipped = false
+
 function onDragStart(source, piece, position, orientation) {
   if (game.game_over()) return false
-  if (piece.search(/^b/) !== -1) return false
+  if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+  (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+    return false
+}
 }
 
 function loadFEN() {
@@ -17,9 +22,16 @@ function loadFEN() {
 
 function resetState() {
   game = new Chess()
-  console.log(game.ascii())
+  // console.log(game.ascii())
   board.position(game.fen())
   engines.forEach(n => n.reset())
+  if (flipped) makeMove()
+}
+
+function flipBoard() {
+  board.flip()
+  makeMove()
+  flipped = !flipped
 }
 
 function updateState() {

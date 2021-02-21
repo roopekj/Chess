@@ -1,9 +1,6 @@
 class CustomAI {
 
     constructor() {
-        this.bvalue = 0
-        this.wvalue = 0
-
         this.move = this.move.bind(this)
         this.search = this.search.bind(this)
         this.evaluate = this.evaluate.bind(this)
@@ -57,8 +54,7 @@ class CustomAI {
 
     evaluate() {
         let board = game.board()
-        let wvalue = 0
-        let bvalue = 0
+        let value = 0
 
         let square_index = 0
         for (let row_index = 0; row_index < 8; row_index++) {
@@ -66,15 +62,15 @@ class CustomAI {
                 let piece = board[row_index][column_index]
                 if (piece) {
                     if (piece.color === 'w') {
-                        wvalue += this.pieceEval(piece.type, piece.color, square_index)
+                        value -= this.pieceEval(piece.type, piece.color, square_index)
                     } else if (piece.color === 'b') {
-                        bvalue += this.pieceEval(piece.type, piece.color, square_index)
+                        value += this.pieceEval(piece.type, piece.color, square_index)
                     }
                 }
                 square_index += 1
             }
         }
-        return bvalue - wvalue
+        return value
     }
 
     moveEval(a, b) {
@@ -83,13 +79,11 @@ class CustomAI {
 
             let output = 0
 
-            /*
-            game.move(n)
+            /*game.move(n)
             if (game.in_check()) {
-                output -= 150
+                output += 150
             }
-            game.undo()
-            */
+            game.undo()*/
             
             if (n.captured != null) {
                 output += pvalue[n.piece]
@@ -127,7 +121,7 @@ class CustomAI {
             return value
         } else {
             let value = Infinity
-            for (var i = sortedMoves.length - 1; i >= 0; i--) {
+            for (var i = 0; i < sortedMoves.length; i++) {
                 game.move(sortedMoves[i])
                 value = Math.min(value, this.search(depth - 1, !maximize, alpha, beta))
                 beta = Math.min(beta, value)
@@ -146,25 +140,27 @@ class CustomAI {
 
     move() {
         this.isEndGame()
+
         var currMax = -Infinity
         var currMove = null
         let possibleMoves = game.moves({ verbose: true })
         let sortedMoves = possibleMoves.sort(this.moveEval)
+        
         for (var i = 0; i < sortedMoves.length; i++) {
             game.move(sortedMoves[i])
-            let maxValue = this.search(2, false, -Infinity, Infinity)
+            let maxValue = this.search(2, game.turn() === 'w', -Infinity, Infinity)
             if (maxValue === Infinity) {
                 // This line leads to a mate in x, so we don't need to consider the others
                 updateState()
                 return
             }
-            if (maxValue > currMax) {
+            if (maxValue >= currMax) {
                 currMax = maxValue
                 currMove = sortedMoves[i]
             }
             game.undo()
         }
-        game.move(currMove)
+        if (currMove !== null) { game.move(currMove) }
         updateState()
     }
 }
